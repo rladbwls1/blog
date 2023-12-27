@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="mini.spring.mvc.repository.QAMapper">
+	<select id="list" resultType="mini.spring.mvc.bean.QADTO" >
+		select * from  
+			(select b.* , rownum r from 
+				(select * from qa order by ref desc , re_step asc ) b)  
+	</select>
+	<select id="maxNum" resultType="int">
+		select NVL(max(num),0) from qa
+	</select>
+	<update id="writeUpdate" parameterType="mini.spring.mvc.bean.QADTO">
+		<![CDATA[ 
+			update qa set re_step=re_step+1 where ref= #{ref} and re_step > #{re_step}
+		]]>
+	</update>
+	<insert id="writeInsert" parameterType="mini.spring.mvc.bean.QADTO">
+		insert into qa(num,writer,title,content,reg_date,ref,re_step,re_level,isfile,passwd) 
+		values(qa_seq.NEXTVAL,#{writer},#{title},#{content},sysdate,#{ref},#{re_step},#{re_level},#{isfile},#{passwd})
+	</insert>
+	<update id="updateCountUp">
+		update qa set readcount=readcount+1 where num = #{num}
+	</update>
+	
+	<select id="readNum" resultType="mini.spring.mvc.bean.QADTO">
+		select * from qa where num =#{num}
+	</select>
+	
+	<select id="readPasswd" resultType="String" parameterType="int">
+		select passwd from qa where num = #{num}
+	</select>
+
+	<update id="updateNum" parameterType="mini.spring.mvc.bean.QADTO">
+		update qa
+		<set>
+			<if test="writer != null">writer=#{writer},</if>
+			<if test="title != null">title=#{title},</if>
+			<if test="passwd != null">passwd=#{passwd},</if>
+			<if test="content != null">content=#{content}</if>
+		</set>
+		 where num=#{num}
+	</update>
+	<delete id="deleteNum">
+		delete from qa where num=#{num}
+	</delete>
+	
+	
+	<delete id="deleteqanum">
+		delete from qa_file where qanum=#{qanum}
+	</delete>
+	<insert id="fileInsert">
+	      insert into qa_file values(qa_file_seq.nextval, #{qanum}, #{filename}, #{orgname})
+	</insert>
+	
+	<select id="filenameimport">
+		select orgname from qa_file where qanum = #{qanum}
+	</select>
+	<select id="filenameimport2">
+		select filename from qa_file where qanum = #{qanum}
+	</select>
+	<select id="fileList" resultType="QAFileDTO">
+		select * from qa_file where qanum =#{qanum}
+	</select>
+	
+</mapper>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mini.spring.mvc.repository.ImgBoardMapper"> 
+    <!-- 글 목록 -->
+    <select id="list">
+    	select * FROM imgboard order by num desc
+	</select>
+
+    <!-- 글 작성 -->
+    <insert id="writeInsert" parameterType="mini.spring.mvc.bean.ImgBoardDTO">
+    	insert into IMGBOARD(num, writer, subject,passwd,reg_date, content,isfile)
+    	values(
+    		imgboard_seq.NEXTVAL,
+    		#{writer},
+    		#{subject},
+    		#{passwd},
+    		sysdate,
+    		#{content},
+    		#{isfile}
+    	)
+    </insert>
+    <update id="main_img">
+    	update imgboard set img_main = #{img_main} where num = #{num}
+    </update>
+    <select id ="getThumb">
+    	select max(filename) from imgboard_file where imgboardnum=#{num} order by num asc
+    </select>
+    <!--  -->
+    <select id="maxNum" resultType="int">
+		select NVL(max(num),0) from imgboard
+	</select>
+	<update id="updateImgMain">
+		update IMGBOARD set img_main=#{img_main} where num=#{num}
+	</update>
+	<!-- 파일 값 넣기 -->
+	<insert id="fileInsert" parameterType="mini.spring.mvc.bean.ImgBoardFileDTO">
+		insert into imgboard_file values(
+			imgboard_file_seq.nextval,
+			#{imgboardnum},
+			#{fileName}
+		)
+	</insert>
+	<!-- 조회수 -->
+   <update id="updateCountUp">
+      update IMGBOARD set readcount=readcount+1 where num = #{num}
+   </update>
+   
+   <select id = "readNum" resultType="mini.spring.mvc.bean.ImgBoardDTO">
+   	  select * from IMGBOARD where num = ${num}
+   </select>
+   
+   <select id="fileList" resultType="mini.spring.mvc.bean.ImgBoardFileDTO">  
+		select * from IMGBOARD_file where imgboardnum=#{imgboardnum}		
+	</select>
+
+   <select id="fileNum">  
+		select filename from IMGBOARD_file where imgboardnum=#{imgboardnum}		
+	</select>
+	
+	<update id = "updateNum" parameterType="mini.spring.mvc.bean.ImgBoardDTO">
+		update IMGBOARD
+		<set>
+			<if test="writer !=null">writer=#{writer},</if>
+			<if test="subject !=null">subject=#{subject},</if>
+			<if test="content !=null">content=#{content},</if>
+			<if test="passwd !=null">passwd=#{passwd}</if>
+		</set>
+		where num = #{num}
+	</update>
+	
+	<select id ="selectefile">
+		select * from imgboard_file where imgboardnum=#{imgboardnum};
+	</select>
+	
+	<delete id = "deleteNum">
+   		delete from IMGBOARD where num=#{num}
+   </delete>
+   
+   <delete id = "deleteFile">
+   		delete from IMGBOARD_file where imgboardnum=#{imgboardnum}
+   </delete>
+	
+	<select id="readPasswd" resultType="String">
+   		select passwd from IMGBOARD where num = ${num}
+   </select>
+   
+   <select id ="fileNameSelect">
+		select filename from IMGBOARD_file where imgboardnum = #{imgboardnum}	
+	</select>
+	
+</mapper>

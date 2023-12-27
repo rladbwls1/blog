@@ -1,0 +1,134 @@
+@charset "UTF-8";
+table{
+	border-collapse: collapse;
+}
+tr{
+	border-top: 1px solid lightgrey;
+}
+table tr:last-child{
+	border-bottom: 1px solid lightgrey;
+}
+td{
+	padding: 10px 0;
+}
+table{
+	width: 100%;
+}
+form input[type="text"], input[type="password"]{
+	font-size: 15px;
+	width: 200px;
+	height: 40px;
+}
+textarea{
+	width: 100%;
+	font-size: 15px;
+}
+#table{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+h1{
+	text-align: center;
+}
+#button{
+	width: 100px;
+	height: 30px;
+	border-radius: 5px;
+	background-color: #F86F03;
+	color: white;
+	border: none;
+}
+button[type="submit"]{
+	width: 100px;
+	height: 40px;
+	margin-top: 16px;
+	float: right;
+	background-color: #272124;
+	border-radius: 5px;
+	color: white;
+	border: none;
+}
+#f_tr{
+	border-top: none;
+}
+.card-body{
+	padding-top: 0px !important;
+}
+input[type="file"]{
+	margin-left: 15px;
+}
+#content{
+	resize: none;
+	border: none;
+}
+#btn1{
+	float: right;
+	margin-top: 16px;
+}
+#btn1 button{
+	width: 100px;
+	height: 40px;
+	margin-top: 16px;
+	float: right;
+	background-color: #272124;
+	border-radius: 5px;
+	color: white;
+	border: none;
+	margin-left: 10px;
+}
+.se2_inputarea{
+	-webkit-user-modify:read-only !important;
+}
+#commend{
+	
+}
+#comm{
+	margin-top: 20px;
+	display: flex;
+}
+.con{
+}
+#tb2{
+	border: 1px solid black;
+	border-radius: 5px;
+}
+#sub{
+	border-top-right-radius: 5px;
+	border-bottom-right-radius: 5px;
+	background-color: #F86F03;
+	color: white;
+	border: none;
+}
+#commid{
+	padding-left: 10px;
+	min-width: 70px;
+}
+#commreg{
+	text-align: right;
+	margin-right: 10px;
+	color: gray;
+}
+.xx{
+	color: white;
+	background-color: #C70039; 	
+	border: none;
+	border-radius: 5px;
+	padding: 5px 7px;
+}
+.re{
+	padding: 5px 7px;
+	color: white;
+	background-color: #26577C; 	
+	border: none;
+	border-radius: 5px;
+}
+#lasttd{
+	padding-right: 10px;
+	min-width: 50px;
+	max-width: 50px;
+	text-align: right;
+}
+.co{
+	width: 70%;
+}

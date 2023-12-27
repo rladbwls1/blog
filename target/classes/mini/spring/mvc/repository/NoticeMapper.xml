@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="mini.spring.mvc.repository.NoticeMapper">
+	
+	<insert id="insert" parameterType="mini.spring.mvc.bean.NoticeDTO">
+		insert into notice values(
+			notice_seq.nextval,
+			#{subject},
+			#{content},
+			#{isfile},
+			sysdate
+		)
+	</insert>
+	<select id="list" resultType="mini.spring.mvc.bean.NoticeDTO">
+		select * from notice order by num desc
+	</select>
+ 	<select id="content" resultType="mini.spring.mvc.bean.NoticeDTO">
+ 		select * from notice where num=#{num}
+ 	</select>
+ 	<update id="update" parameterType="mini.spring.mvc.bean.NoticeDTO">
+ 		update notice 
+	 		<set>
+	 		 	<if test="subject !=null and subject !=''">subject=#{subject},</if> 
+	 		 	<if test="content !=null and content !=''">content=#{content},</if> 
+	 		 	isfile=#{isfile}
+	 		</set>
+ 		where num=#{num}
+ 	</update>
+ 	<delete id="delete">
+ 		delete from notice where num=#{num}
+ 	</delete>
+ 	<select id="maxNum">
+ 		select max(num) from notice
+ 	</select>
+ 	
+ 	<insert id="fileInsert" >
+		insert into notice_file values(
+			notice_file_seq.nextval,#{noticenum},#{filename},#{type}) 	
+ 	</insert>
+ 	<select id="isfile" resultType="int">
+ 		select isfile from notice where num=#{num}
+ 	</select>
+ 	<delete id="deleteFile">
+ 		delete from notice_file where noticenum=#{num}
+ 	</delete>
+ 	<select id="getFilenames" resultType="String">
+ 		select filename from notice_file where noticenum=#{num}
+ 	</select>
+ 	<insert id="insertReply" parameterType="mini.spring.mvc.bean.NoticeReplyDTO">
+ 		insert into notice_reply values(
+ 			notice_reply_seq.nextval,
+ 			#{noticenum},
+ 			#{id},
+ 			#{content},
+ 			sysdate
+ 			)
+ 	</insert>
+ 	<select id="replys" resultType="mini.spring.mvc.bean.NoticeReplyDTO">
+ 		select * from notice_reply where noticenum=#{num} order by num asc
+ 	</select>
+ 	<delete id="deleteReply">
+ 		delete from notice_reply where num=#{num}
+ 	</delete>
+ 	<delete id="deleteReplys">
+ 		delete from notice_reply where noticenum=#{num}
+ 	</delete>
+ 	<select id="imgFiles">
+ 		select filename from notice_file where type='image'and noticenum=#{num} order by num asc
+ 	</select>
+ 	<delete id="deleteFileByName">
+ 		delete from notice_file where filename=#{filename}
+ 	</delete>
+ 	<select id="checkFile">
+ 		select count(*) from notice_file where noticenum=#{num}
+ 	</select>
+ 	<select id="checkFileNum">
+ 		select max(filename) from notice_file where noticenum=#{num} order by num desc
+ 	</select>
+ 	
+ 	
+</mapper>   

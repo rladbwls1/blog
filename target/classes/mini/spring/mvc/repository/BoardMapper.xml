@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+    <mapper namespace="mini.spring.mvc.repository.BoardMapper">
+	    <resultMap type="mini.spring.mvc.bean.BoardDTO" id="BoardDTO">
+	        <id property="content" column="content"/>
+	        <id property="num" column="num"/>
+	        <id property="writer" column="writer"/>
+	        <id property="title" column="title"/>
+	        <id property="reg" column="reg"/>
+	        <id property="count" column="count"/>
+	        <id property="isfile" column="isfile"/>
+	        <id property="filename" column="filename"/>
+	        <collection property="file" resultMap="FileDTO"></collection>
+	    </resultMap>
+	
+	    <resultMap type="mini.spring.mvc.bean.FileDTO" id="FileDTO">
+	        <id property="num" column="num"/>
+	        <id property="db_boardnum" column="db_boardnum"/>
+	        <id property="filename" column="filename"/>
+	        <id property="main_img" column="main_img"/>
+	    </resultMap>
+	
+	    <select id="boardList" resultMap="BoardDTO">
+	        SELECT * FROM db_board order by num desc
+	        
+	    </select>
+    
+    	<select id="contentList" resultType="mini.spring.mvc.bean.BoardDTO">
+    		select * from db_board where num=#{num}
+    	</select>
+    	<insert id="write" parameterType="mini.spring.mvc.bean.BoardDTO">
+    		insert into db_board (num, writer, title, content, pw, reg, count, isfile) 
+    			values (
+    			db_board_seq.nextval,
+    			#{writer},
+    			#{title},
+    			#{content},
+    			#{pw},
+    			sysdate,
+    			#{count},
+    			#{isfile}
+    			)
+    	</insert>
+    	<update id="countNum">
+    		update db_board set count = count + 1 where num=#{num}
+    	</update>
+    	<insert id="upload" parameterType="mini.spring.mvc.bean.FileDTO">
+    		insert into db_board_file (num, db_boardnum, filename, main_img) 
+    			values (
+    			db_board_file_seq.nextval,
+    			#{db_boardnum},
+    			#{filename},
+    			#{main_img}
+    			)
+    	</insert>
+    	<select id="maxNum">
+    		select NVL(max(num), 0) from db_board
+    	</select>
+    	<select id="imgPrint" resultType="String">
+    		select filename from db_board_file where db_boardnum = #{db_boardnum}
+    	</select>
+    	<delete id="imgDelete">
+    		delete from db_board_file where db_boardnum = #{db_boardnum}
+    	</delete>
+    	<delete id="imgD">
+    		delete from db_board_file where filename = #{filename}
+    	</delete>
+    	<delete id="writeDel">
+    		delete from db_board where num = #{num} and pw = #{pw}
+    	</delete>
+    	<select id="pwCheck">
+    		select pw from db_board where num = #{num} 
+    	</select>
+    	<update id="updateWrite" parameterType="mini.spring.mvc.bean.BoardDTO">
+    		update db_board
+    		<set>
+    			<if test="title != null">title = #{title},</if>
+    			<if test="content != null">content = #{content},</if>
+    			<if test="pw != null">pw = #{pw}</if>
+    		</set>  
+    		where num = #{num}
+    	</update>
+    	<insert id="commendWrite" parameterType="mini.spring.mvc.bean.CommendDTO">
+    		insert into commend (num, boardnum, id, content, reg) 
+    			values (
+    			commend_seq.nextval,
+    			#{boardnum},
+    			#{id},
+    			#{content},
+    			sysdate
+    			)
+    	</insert>
+    	<select id="commendCount">
+    		select count(*) from commend where boardnum = #{boardnum}
+    	</select>
+    	<select id="commendList" resultType="mini.spring.mvc.bean.CommendDTO">
+    		select * from commend where boardnum = #{boardnum}
+    	</select>
+    	<delete id="deleteComm">
+    		delete from commend where num = #{num}
+    	</delete>
+    	<delete id="deleteCom">
+    		delete from commend where boardnum = #{boardnum}
+    	</delete>
+    	<update id="updateComm">
+    		update commend set content = #{content} where num=#{num}
+   		</update>
+   		<select id="filename">
+   		<![CDATA[
+   			SELECT filename
+				FROM (
+				    SELECT *
+				    FROM db_board_file
+				    WHERE db_boardnum = #{db_boardnum}
+				    ORDER BY num ASC
+				) WHERE ROWNUM <= 1
+				]]>		
+   		</select>
+   		<update id="filenameUp">
+   			update db_board set filename = #{filename} where num = #{num}
+   		</update>
+   		
+    </mapper>

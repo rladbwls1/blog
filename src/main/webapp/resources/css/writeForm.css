@@ -1,0 +1,60 @@
+@charset "UTF-8";
+table{
+	border-collapse: collapse;
+}
+tr{
+	border-top: 1px solid lightgrey;
+}
+table tr:last-child{
+	border-bottom: 1px solid lightgrey;
+}
+td{
+	padding: 10px 0;
+}
+table{
+	width: 100%;
+}
+form input[type="text"], input[type="password"]{
+	font-size: 15px;
+	width: 200px;
+	height: 40px;
+}
+textarea{
+	width: 100%;
+	font-size: 15px;
+}
+#table{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+h1{
+	text-align: center;
+}
+#button{
+	width: 100px;
+	height: 30px;
+	border-radius: 5px;
+	background-color: #F86F03;
+	color: white;
+	border: none;
+}
+button[type="submit"]{
+	width: 100px;
+	height: 40px;
+	margin-top: 16px;
+	float: right;
+	background-color: #272124;
+	border-radius: 5px;
+	color: white;
+	border: none;
+}
+#f_tr{
+	border-top: none;
+}
+.card-body{
+	padding-top: 0px !important;
+}
+input[type="file"]{
+	margin-left: 15px;
+}

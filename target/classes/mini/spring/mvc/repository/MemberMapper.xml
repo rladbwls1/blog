@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="mini.spring.mvc.repository.MemberMapper">
+
+	<select id="loginCheck" resultType="Integer" parameterType="mini.spring.mvc.bean.MemberDTO">
+		select count(*) from member where id=#{id} and passwd=#{passwd}
+	</select>
+	<select id="getStatus" resultType="Integer">
+		select status from member where id=#{id}
+	</select>
+	
+	<select id="confirmId" resultType="int">
+		select count(*) from member where id =#{id}
+	</select>
+	
+	<insert id="signup" parameterType="mini.spring.mvc.bean.MemberDTO">
+		insert into member(id, passwd, name, status) values(
+				#{id},
+				#{passwd},
+				#{name},
+				1)
+	</insert> 
+
+</mapper>
